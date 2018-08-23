@@ -21,7 +21,7 @@ import android.widget.Toast;
 import com.abahnj.popularmovies.R;
 import com.abahnj.popularmovies.interfaces.MovieClickListener;
 import com.abahnj.popularmovies.ui.detail.DetailActivity;
-import com.abahnj.popularmovies.utils.AppConstants;
+import com.abahnj.popularmovies.utils.Constants;
 import com.abahnj.popularmovies.utils.AppUtils;
 import com.abahnj.popularmovies.utils.GridSpacingItemDecoration;
 import com.abahnj.popularmovies.utils.SharedPreferenceHelper;
@@ -29,9 +29,9 @@ import com.abahnj.popularmovies.utils.SharedPreferenceHelper;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.abahnj.popularmovies.utils.AppConstants.ACTIVITY_TYPE;
-import static com.abahnj.popularmovies.utils.AppConstants.MOVIE_ID_INTENT;
-import static com.abahnj.popularmovies.utils.AppConstants.MOVIE_IMAGE_TRANSITION;
+import static com.abahnj.popularmovies.utils.Constants.ACTIVITY_TYPE;
+import static com.abahnj.popularmovies.utils.Constants.MOVIE_ID_INTENT;
+import static com.abahnj.popularmovies.utils.Constants.MOVIE_IMAGE_TRANSITION;
 
 public class MainActivity extends AppCompatActivity implements MovieClickListener{
 
@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements MovieClickListene
         tvToolbar.setText(R.string.movies);
         constraintLayout = findViewById(R.id.main);
         setupViewModel();
-        loadMovies(AppConstants.SORT_BY_POPULAR, 2);
+        loadMovies(Constants.SORT_BY_POPULAR, 2);
         movieListAdapter = new MovieListAdapter(this, this);
         int recyclerViewSpanCount = getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT ? 2 : 4;
         RecyclerView.LayoutManager mMoviesLayoutManager = new GridLayoutManager(this, recyclerViewSpanCount);
@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity implements MovieClickListene
 
         boolean forceLoad = loadingIdentifier == 1;
 
-        if (sort.equalsIgnoreCase(AppConstants.SORT_BY_FAVORITE)) {
+        if (sort.equalsIgnoreCase(Constants.SORT_BY_FAVORITE)) {
 
         } else {
             mViewModel.loadMovies(forceLoad, sort).observe(this, movieResource -> {

@@ -18,7 +18,7 @@ import android.widget.TextView;
 import com.abahnj.popularmovies.R;
 import com.abahnj.popularmovies.data.MovieEntry;
 import com.abahnj.popularmovies.interfaces.MovieClickListener;
-import com.abahnj.popularmovies.utils.AppConstants;
+import com.abahnj.popularmovies.utils.Constants;
 import com.abahnj.popularmovies.utils.AppUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -103,7 +103,7 @@ public class MovieListAdapter extends ListAdapter<MovieEntry, MovieListAdapter.M
 
             if (movieEntry.getPosterPath() != null) {
                 Glide.with(context)
-                        .load(AppConstants.POSTER_BASE_PATH + movieEntry.getPosterPath())
+                        .load(Constants.POSTER_BASE_PATH + movieEntry.getPosterPath())
                         .apply(new RequestOptions()
                                 .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                                 .placeholder(roundedBitmapDrawable)
@@ -116,7 +116,7 @@ public class MovieListAdapter extends ListAdapter<MovieEntry, MovieListAdapter.M
             }
 
             if (movieEntry.getReleaseDate() != null) {
-                mTvReleaseDate.setText(AppUtils.convertDate(movieEntry.getReleaseDate(), AppConstants.DF1, AppConstants.DF3));
+                mTvReleaseDate.setText(AppUtils.convertDate(movieEntry.getReleaseDate(), Constants.DF1, Constants.DF3));
             }
 
             if (movieEntry.getVoteAverage() != null) {
@@ -132,7 +132,7 @@ public class MovieListAdapter extends ListAdapter<MovieEntry, MovieListAdapter.M
                     getItem(getAdapterPosition()).getMovieId(),
                     mImvMovieImage,
                     transitionName,
-                    AppConstants.ACTIVITY_NORMAL);
+                    Constants.ACTIVITY_NORMAL);
         }
     }
 }

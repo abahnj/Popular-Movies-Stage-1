@@ -3,7 +3,7 @@ package com.abahnj.popularmovies.api.interceptors;
 import android.support.annotation.NonNull;
 
 import com.abahnj.popularmovies.BuildConfig;
-import com.abahnj.popularmovies.utils.AppConstants;
+import com.abahnj.popularmovies.utils.Constants;
 
 
 import java.io.IOException;
@@ -20,7 +20,7 @@ public class AuthenticationInterceptor implements Interceptor {
         Request originalRequest = chain.request();
         HttpUrl originalHttpUrl = originalRequest.url();
         HttpUrl newHttpUrl = originalHttpUrl.newBuilder()
-                .setQueryParameter(AppConstants.API_KEY_PARAM, BuildConfig.ApiKey)
+                .setQueryParameter(Constants.API_KEY_PARAM, BuildConfig.ApiKey)
                 .build();
         Request newRequest = originalRequest.newBuilder()
                 .url(newHttpUrl)

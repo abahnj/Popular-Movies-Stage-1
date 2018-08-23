@@ -10,7 +10,7 @@ import com.abahnj.popularmovies.api.RetrofitInterface;
 import com.abahnj.popularmovies.api.response.MovieResponse;
 import com.abahnj.popularmovies.data.MovieEntry;
 import com.abahnj.popularmovies.data.source.local.dao.MoviesDao;
-import com.abahnj.popularmovies.utils.AppConstants;
+import com.abahnj.popularmovies.utils.Constants;
 import com.abahnj.popularmovies.utils.AppExecutor;
 import com.abahnj.popularmovies.utils.Resource;
 import com.abahnj.popularmovies.utils.SharedPreferenceHelper;
@@ -37,7 +37,7 @@ public class AppRepository implements AppRepositoryInterface {
         return new NetworkBoundResource<List<MovieEntry>, MovieResponse>(executor) {
             @Override
             protected void saveCallResult(@NonNull MovieResponse item) {
-                SharedPreferenceHelper.setSharedPreferenceLong(AppConstants.DATA_SAVED_TIME, new Date(System.currentTimeMillis()).getTime());
+                SharedPreferenceHelper.setSharedPreferenceLong(Constants.DATA_SAVED_TIME, new Date(System.currentTimeMillis()).getTime());
                 moviesDao.deleteMovies();
                 moviesDao.saveMoviesToDb(item.getResults());
             }
@@ -59,7 +59,7 @@ public class AppRepository implements AppRepositoryInterface {
             @NonNull
             @Override
             protected LiveData<ApiResponse<MovieResponse>> createCall() {
-                return apiInterface.getMovies(sortBy, AppConstants.LANGUAGE, AppConstants.PAGE);
+                return apiInterface.getMovies(sortBy, Constants.LANGUAGE, Constants.PAGE);
             }
         }.asLiveData();
     }
@@ -77,9 +77,9 @@ public class AppRepository implements AppRepositoryInterface {
     private Boolean shouldFetchData(Long time) {
         boolean shouldFetch;
         long savedTime;
-        if (SharedPreferenceHelper.contains(AppConstants.DATA_SAVED_TIME)) {
-            savedTime = SharedPreferenceHelper.getSharedPreferenceLong(AppConstants.DATA_SAVED_TIME, 0L);
-            shouldFetch = (time - savedTime) > TimeUnit.MINUTES.toMillis(AppConstants.FRESH_TIMEOUT_IN_MINUTES);
+        if (SharedPreferenceHelper.contains(Constants.DATA_SAVED_TIME)) {
+            savedTime = SharedPreferenceHelper.getSharedPreferenceLong(Constants.DATA_SAVED_TIME, 0L);
+            shouldFetch = (time - savedTime) > TimeUnit.MINUTES.toMillis(Constants.FRESH_TIMEOUT_IN_MINUTES);
         } else {
             shouldFetch = false;
         }

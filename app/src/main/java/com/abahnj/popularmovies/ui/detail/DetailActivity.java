@@ -22,7 +22,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.abahnj.popularmovies.R;
-import com.abahnj.popularmovies.utils.AppConstants;
+import com.abahnj.popularmovies.utils.Constants;
 import com.abahnj.popularmovies.utils.AppUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
@@ -37,11 +37,11 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-import static com.abahnj.popularmovies.utils.AppConstants.ACTIVITY_TYPE;
-import static com.abahnj.popularmovies.utils.AppConstants.BACKDROP_BASE_PATH;
-import static com.abahnj.popularmovies.utils.AppConstants.MOVIE_ID_INTENT;
-import static com.abahnj.popularmovies.utils.AppConstants.MOVIE_IMAGE_TRANSITION;
-import static com.abahnj.popularmovies.utils.AppConstants.POSTER_BASE_PATH;
+import static com.abahnj.popularmovies.utils.Constants.ACTIVITY_TYPE;
+import static com.abahnj.popularmovies.utils.Constants.BACKDROP_BASE_PATH;
+import static com.abahnj.popularmovies.utils.Constants.MOVIE_ID_INTENT;
+import static com.abahnj.popularmovies.utils.Constants.MOVIE_IMAGE_TRANSITION;
+import static com.abahnj.popularmovies.utils.Constants.POSTER_BASE_PATH;
 
 public class DetailActivity extends AppCompatActivity {
 
@@ -133,8 +133,8 @@ public class DetailActivity extends AppCompatActivity {
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        outState.putString(AppConstants.TRANSITION, transitionName);
-        outState.putInt(AppConstants.MOVIE_ID, movieId);
+        outState.putString(Constants.TRANSITION, transitionName);
+        outState.putInt(Constants.MOVIE_ID, movieId);
         super.onSaveInstanceState(outState);
     }
 
@@ -142,8 +142,8 @@ public class DetailActivity extends AppCompatActivity {
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         if (savedInstanceState != null) {
-            transitionName = savedInstanceState.getString(AppConstants.TRANSITION);
-            movieId = savedInstanceState.getInt(AppConstants.MOVIE_ID);
+            transitionName = savedInstanceState.getString(Constants.TRANSITION);
+            movieId = savedInstanceState.getInt(Constants.MOVIE_ID);
         }
     }
 
@@ -167,7 +167,7 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     private void setMovieReleaseDate(String releaseDate) {
-        mTvReleaseDate.setText(AppUtils.convertDate(releaseDate, AppConstants.DF1, AppConstants.DF2));
+        mTvReleaseDate.setText(AppUtils.convertDate(releaseDate, Constants.DF1, Constants.DF2));
     }
 
     private void setMovieRating(String rating) {
@@ -214,7 +214,7 @@ public class DetailActivity extends AppCompatActivity {
 
         getWindow().setSharedElementEnterTransition(set);
 
-        if (activityType.equalsIgnoreCase(AppConstants.ACTIVITY_FAVOURITE)) {
+        if (activityType.equalsIgnoreCase(Constants.ACTIVITY_FAVOURITE)) {
             getWindow().setSharedElementExitTransition(null);
             mImvPoster.setTransitionName(null);
         }

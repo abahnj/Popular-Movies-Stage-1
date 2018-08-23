@@ -7,7 +7,7 @@ import com.abahnj.popularmovies.api.interceptors.AuthenticationInterceptor;
 import com.abahnj.popularmovies.data.source.local.AppDatabase;
 import com.abahnj.popularmovies.data.source.local.dao.MoviesDao;
 import com.abahnj.popularmovies.data.source.AppRepository;
-import com.abahnj.popularmovies.utils.AppConstants;
+import com.abahnj.popularmovies.utils.Constants;
 import com.abahnj.popularmovies.utils.AppExecutor;
 import com.abahnj.popularmovies.utils.LiveDataCallAdapterFactory;
 import com.abahnj.popularmovies.utils.MainThreadExecutor;
@@ -59,7 +59,7 @@ public class Factory {
     private static Retrofit provideRetrofit() {
         return new Retrofit.Builder()
                 .client(provideOkHttpClient())
-                .baseUrl(AppConstants.BASE_URL)
+                .baseUrl(Constants.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .addCallAdapterFactory(new LiveDataCallAdapterFactory())
                 .build();
