@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Popular Movies</string>
+    <string name="error_no_internet">Internet not connected</string>
+    <string name="txt_empty_string" />
+    <string name="movies">Popular Movies</string>
+    <string name="movie_backdrop">Movie Backdrop Image</string>
+    <string name="plot">Movie Plot</string>
+    <string name="movie_poster">Movie Poster</string>
+    <string name="txt_rating">Rating</string>
+</resources>
