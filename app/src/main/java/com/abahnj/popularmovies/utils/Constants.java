@@ -11,6 +11,10 @@ public class Constants {
     public static final String BASE_URL = "https://api.themoviedb.org/3/";
     public static final String POSTER_BASE_PATH = "http://image.tmdb.org/t/p/w342";
     public static final String BACKDROP_BASE_PATH = "http://image.tmdb.org/t/p/w780";
+    public static final String YOUTUBE_THUMBNAIL = "https://img.youtube.com/vi/%s/mqdefault.jpg";
+    public static final int FIRST_ITEM = 0;
+    public static final String YOUTUBE = "YouTube";
+    public static final String YOUTUBE_URL = "http://www.youtube.com/watch?v=";
     public static final String API_KEY_PARAM = "api_key";
     public static final String SORT_BY_POPULAR = "popular";
     public static final String SORT_BY_TOP_RATED = "top_rated";

@@ -7,12 +7,20 @@ import android.arch.persistence.room.TypeConverters;
 import android.content.Context;
 import android.util.Log;
 
+import com.abahnj.popularmovies.data.CastEntry;
+import com.abahnj.popularmovies.data.GenreEntry;
 import com.abahnj.popularmovies.data.MovieEntry;
+import com.abahnj.popularmovies.data.ReviewEntry;
+import com.abahnj.popularmovies.data.VideoEntry;
 import com.abahnj.popularmovies.data.source.local.converter.IntegerListConvertor;
 import com.abahnj.popularmovies.data.source.local.dao.MoviesDao;
 
 
-@Database(entities = {MovieEntry.class},
+@Database(entities = {MovieEntry.class,
+        GenreEntry.class,
+        CastEntry.class,
+        ReviewEntry.class,
+        VideoEntry.class},
         version = 1,
         exportSchema = false)
 @TypeConverters({IntegerListConvertor.class})
@@ -20,7 +28,7 @@ public abstract class AppDatabase extends RoomDatabase {
 
     private static final String LOG_TAG = AppDatabase.class.getSimpleName();
     private static final Object LOCK = new Object();
-    private static final String DATABASE_NAME = "journal";
+    private static final String DATABASE_NAME = "PopularMovies";
     private static volatile AppDatabase sInstance;
 
     public static AppDatabase getInstance(Context context) {

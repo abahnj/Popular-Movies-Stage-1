@@ -1,4 +1,4 @@
-package com.abahnj.popularmovies.ui.main;
+package com.abahnj.popularmovies.ui.adapter;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -20,7 +20,7 @@ import com.abahnj.popularmovies.data.MovieEntry;
 import com.abahnj.popularmovies.interfaces.MovieClickListener;
 import com.abahnj.popularmovies.utils.Constants;
 import com.abahnj.popularmovies.utils.AppUtils;
-import com.bumptech.glide.Glide;
+import com.abahnj.popularmovies.utils.GlideApp;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 
@@ -43,7 +43,7 @@ public class MovieListAdapter extends ListAdapter<MovieEntry, MovieListAdapter.M
         }
     }*/
 
-    MovieListAdapter(Context context, MovieClickListener movieEntryClickListener) {
+    public MovieListAdapter(Context context, MovieClickListener movieEntryClickListener) {
         super(DIFF_CALLBACK);
         this.movieEntryClickListener = movieEntryClickListener;
         this.context = context;
@@ -102,7 +102,7 @@ public class MovieListAdapter extends ListAdapter<MovieEntry, MovieListAdapter.M
             roundedBitmapDrawable.setCornerRadius(25F);
 
             if (movieEntry.getPosterPath() != null) {
-                Glide.with(context)
+                GlideApp.with(context)
                         .load(Constants.POSTER_BASE_PATH + movieEntry.getPosterPath())
                         .apply(new RequestOptions()
                                 .diskCacheStrategy(DiskCacheStrategy.RESOURCE)

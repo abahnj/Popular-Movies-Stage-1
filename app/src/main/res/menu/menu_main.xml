@@ -9,5 +9,9 @@
         <item
             android:id="@+id/top_rated"
             android:title="@string/top_rated" />
+        <item
+            android:icon="@drawable/ic_favorite"
+            android:id="@+id/favorite"
+            android:title="@string/txt_favorite" />
     </group>
 </menu>

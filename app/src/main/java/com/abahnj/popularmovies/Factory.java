@@ -1,6 +1,7 @@
 package com.abahnj.popularmovies;
 
 import android.app.Application;
+import android.content.Context;
 
 import com.abahnj.popularmovies.api.RetrofitInterface;
 import com.abahnj.popularmovies.api.interceptors.AuthenticationInterceptor;
@@ -11,6 +12,7 @@ import com.abahnj.popularmovies.utils.Constants;
 import com.abahnj.popularmovies.utils.AppExecutor;
 import com.abahnj.popularmovies.utils.LiveDataCallAdapterFactory;
 import com.abahnj.popularmovies.utils.MainThreadExecutor;
+import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -35,12 +37,12 @@ public class Factory {
     }
 
     // Database
-    public static AppDatabase provideDatabase(Application application) {
-       return AppDatabase.getInstance(application);
+    public static AppDatabase provideDatabase(Context context) {
+       return AppDatabase.getInstance(context);
     }
 
-    public static MoviesDao provideUserDao(Application application) {
-        return provideDatabase(application).moviesDao();
+    public static MoviesDao provideUserDao(Context context) {
+        return provideDatabase(context).moviesDao();
     }
 
     //  NETWORK
@@ -68,6 +70,7 @@ public class Factory {
     private static OkHttpClient provideOkHttpClient() {
         return new OkHttpClient()
                 .newBuilder()
+                .addNetworkInterceptor(new StethoInterceptor())
                 .addInterceptor(provideAuthenticationInterceptor())
                 .addInterceptor(provideHttpLoggingInterceptor())
                 .build();

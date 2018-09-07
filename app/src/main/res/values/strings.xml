@@ -11,4 +11,20 @@
     <string name="popular">Popular</string>
     <string name="no_internet">No internet</string>
     <string name="txt_refresh">Refresh</string>
+    <string name="cast">Cast</string>
+    <string name="txt_cast">Cast</string>
+    <string name="share">Share</string>
+    <string name="img_video_thumb">Video Thumbnail</string>
+    <string name="play_thumb">Play Thumbnail</string>
+    <string name="txt_see_all">See All</string>
+    <string name="txt_trailers">Trailers</string>
+    <string name="txt_reviews">Reviews</string>
+    <string name="review_person">Review Person Avatar</string>
+    <string name="favorite">Favorite</string>
+    <string name="txt_favorite">Favorite</string>
+    <string name="no_fav">no_favourite_icon</string>
+    <string name="love">love_icon</string>
+    <string name="txt_to_add_favorites">to add favorites</string>
+    <string name="txv_please_click">Please click</string>
+    <string name="txt_no_fav_one">You seem to have no favorite movies</string>
 </resources>

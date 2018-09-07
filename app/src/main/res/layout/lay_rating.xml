@@ -16,10 +16,10 @@
         android:padding="@dimen/margin_4"
         android:progress="100"
         android:progressDrawable="@drawable/circular_drawable_rating_reverse"
-        app:layout_constraintBottom_toBottomOf="@+id/progress_rating"
-        app:layout_constraintEnd_toEndOf="@+id/progress_rating"
-        app:layout_constraintStart_toStartOf="@+id/progress_rating"
-        app:layout_constraintTop_toTopOf="@+id/progress_rating" />
+        app:layout_constraintBottom_toBottomOf="@id/progress_rating"
+        app:layout_constraintEnd_toEndOf="@id/progress_rating"
+        app:layout_constraintStart_toStartOf="@id/progress_rating"
+        app:layout_constraintTop_toTopOf="@id/progress_rating" />
 
     <ProgressBar
         android:id="@+id/progress_rating"
@@ -39,31 +39,19 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:progress="90" />
 
-    <!--ImageView
-        android:id="@+id/imv_favourite"
-        android:layout_width="@dimen/fav_height"
-        android:layout_height="@dimen/min_height"
-        android:layout_marginStart="@dimen/margin_44"
-        android:contentDescription="@string/favorite"
-        app:layout_constraintBottom_toBottomOf="@+id/progress_rating"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/progress_rating"
-        app:layout_constraintTop_toTopOf="@+id/progress_rating"
-        app:srcCompat="@drawable/ic_favorite_border" />
--->
     <TextView
         android:id="@+id/tv_ratings"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="@dimen/txt_16"
-        app:layout_constraintBottom_toBottomOf="@+id/progress_rating"
-        app:layout_constraintEnd_toEndOf="@+id/progress_rating"
-        app:layout_constraintStart_toStartOf="@+id/progress_rating"
-        app:layout_constraintTop_toTopOf="@+id/progress_rating"
+        app:layout_constraintBottom_toBottomOf="@id/progress_rating"
+        app:layout_constraintEnd_toEndOf="@id/progress_rating"
+        app:layout_constraintStart_toStartOf="@id/progress_rating"
+        app:layout_constraintTop_toTopOf="@id/progress_rating"
         tools:text="9.8" />
 
     <TextView
+        android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/margin_20"
@@ -71,9 +59,9 @@
         android:text="@string/txt_rating"
         android:textSize="@dimen/txt_12"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/progress_rating"
-        app:layout_constraintStart_toStartOf="@+id/progress_rating"
-        app:layout_constraintTop_toBottomOf="@+id/progress_rating" />
+        app:layout_constraintEnd_toEndOf="@id/progress_rating"
+        app:layout_constraintStart_toStartOf="@id/progress_rating"
+        app:layout_constraintTop_toBottomOf="@id/progress_rating" />
 
     <View
         android:id="@+id/divider"
@@ -87,15 +75,28 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!--  <TextView
-          android:id="@+id/textView4"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:fontFamily="@font/worksans_regular"
-          android:text="@string/txt_favorite"
-          android:textSize="@dimen/txt_12"
-          app:layout_constraintBaseline_toBaselineOf="@+id/textView3"
-          app:layout_constraintEnd_toEndOf="@+id/imv_favourite"
-          app:layout_constraintStart_toStartOf="@+id/imv_favourite" />
-  -->
+    <ImageView
+        android:id="@+id/imv_favourite"
+        android:layout_width="@dimen/fav_height"
+        android:layout_height="@dimen/min_height"
+        android:layout_marginStart="@dimen/margin_44"
+        android:contentDescription="@string/favorite"
+        app:layout_constraintBottom_toBottomOf="@id/progress_rating"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@id/divider"
+        app:layout_constraintTop_toTopOf="@id/progress_rating"
+        app:srcCompat="@drawable/ic_favorite" />
+
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/txt_favorite"
+        android:textSize="@dimen/txt_12"
+        app:layout_constraintBaseline_toBaselineOf="@id/textView3"
+        app:layout_constraintEnd_toEndOf="@id/imv_favourite"
+        app:layout_constraintStart_toStartOf="@id/imv_favourite" />
+
 </android.support.constraint.ConstraintLayout>

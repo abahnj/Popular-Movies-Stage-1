@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.app.Application;
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
+import android.content.Context;
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.VisibleForTesting;
 
@@ -15,17 +17,15 @@ public class MainViewModelFactory extends ViewModelProvider.NewInstanceFactory{
     @SuppressLint("StaticFieldLeak")
     private static volatile MainViewModelFactory INSTANCE;
 
-    private final Application mApplication;
-
     private final AppRepository mAppRepository;
 
-    public static MainViewModelFactory getInstance(Application application) {
+    public static MainViewModelFactory getInstance(Context context) {
 
         if (INSTANCE == null) {
             synchronized (MainViewModelFactory.class) {
                 if (INSTANCE == null) {
-                    INSTANCE = new MainViewModelFactory(application,
-                            Factory.provideAppRepository(Factory.provideApiInterface(), Factory.provideUserDao(application), Factory.provideAppExecutor()));
+                    INSTANCE = new MainViewModelFactory(
+                            Factory.provideAppRepository(Factory.provideApiInterface(), Factory.provideUserDao(context), Factory.provideAppExecutor()));
                 }
             }
         }
@@ -39,8 +39,7 @@ public class MainViewModelFactory extends ViewModelProvider.NewInstanceFactory{
     }
 
 
-    private MainViewModelFactory(Application application, AppRepository repository) {
-        mApplication = application;
+    private MainViewModelFactory(AppRepository repository) {
         mAppRepository = repository;
     }
 
@@ -49,6 +48,6 @@ public class MainViewModelFactory extends ViewModelProvider.NewInstanceFactory{
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
         //noinspection unchecked
-        return (T) new MainViewModel(mApplication, mAppRepository);
+        return (T) new MainViewModel( mAppRepository);
     }
 }

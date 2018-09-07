@@ -1,13 +1,9 @@
 package com.abahnj.popularmovies.api.interceptors;
 
 import android.support.annotation.NonNull;
-
 import com.abahnj.popularmovies.BuildConfig;
 import com.abahnj.popularmovies.utils.Constants;
-
-
 import java.io.IOException;
-
 import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
 import okhttp3.Request;

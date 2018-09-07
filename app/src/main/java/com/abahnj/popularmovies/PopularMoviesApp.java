@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.app.Application;
 import android.content.Context;
 
+import com.facebook.stetho.Stetho;
+
 public class PopularMoviesApp extends Application {
 
 
@@ -13,6 +15,7 @@ public class PopularMoviesApp extends Application {
     public void onCreate() {
         super.onCreate();
         PopularMoviesApp.context = getApplicationContext();
+        Stetho.initializeWithDefaults(this);
     }
 
     public static Context getContext() {

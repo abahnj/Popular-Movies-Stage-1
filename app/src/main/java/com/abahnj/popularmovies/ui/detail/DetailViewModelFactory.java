@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Application;
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.VisibleForTesting;
 
@@ -17,13 +18,13 @@ public class DetailViewModelFactory extends ViewModelProvider.NewInstanceFactory
 
     private final AppRepository mAppRepository;
 
-    public static DetailViewModelFactory getInstance(Application application) {
+    public static DetailViewModelFactory getInstance(Context context) {
 
         if (INSTANCE == null) {
             synchronized (DetailViewModelFactory.class) {
                 if (INSTANCE == null) {
                     INSTANCE = new DetailViewModelFactory(
-                            Factory.provideAppRepository(Factory.provideApiInterface(), Factory.provideUserDao(application), Factory.provideAppExecutor()));
+                            Factory.provideAppRepository(Factory.provideApiInterface(), Factory.provideUserDao(context), Factory.provideAppExecutor()));
                 }
             }
         }

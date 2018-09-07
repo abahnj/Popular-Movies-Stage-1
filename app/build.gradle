@@ -69,6 +69,14 @@ dependencies {
     // Wasabeef Transformations
     implementation 'jp.wasabeef:glide-transformations:3.3.0'
 
+
+    // Flow Layout
+    implementation 'com.xiaofeng.android:flowlayoutmanager:1.2.3.2'
+
+    // Stetho
+    implementation 'com.facebook.stetho:stetho:1.5.0'
+    implementation 'com.facebook.stetho:stetho-okhttp3:1.5.0' // for OkHttp library
+
     // Test libraries
     testImplementation "junit:junit:$rootProject.jUnitVersion"
     androidTestImplementation "com.android.support.test:runner:$rootProject.androidTestRunnerVersion"

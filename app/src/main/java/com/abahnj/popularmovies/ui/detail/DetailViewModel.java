@@ -1,32 +1,92 @@
 package com.abahnj.popularmovies.ui.detail;
 
 import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 
+import com.abahnj.popularmovies.data.CastEntry;
+import com.abahnj.popularmovies.data.GenreEntry;
 import com.abahnj.popularmovies.data.MovieEntry;
+import com.abahnj.popularmovies.data.ReviewEntry;
+import com.abahnj.popularmovies.data.VideoEntry;
 import com.abahnj.popularmovies.data.source.AppRepository;
-import com.abahnj.popularmovies.utils.SharedPreferenceHelper;
+import com.abahnj.popularmovies.utils.Resource;
+
+import java.util.List;
 
 public class DetailViewModel extends ViewModel {
 
     private AppRepository moviesRepo;
-    private MutableLiveData<MovieEntry> movieResult = new MutableLiveData<>();
+    private LiveData<MovieEntry> movieResult;
+    private LiveData<Resource<List<CastEntry>>> castResults;
+    private LiveData<Resource<List<VideoEntry>>> videoResults;
+    private LiveData<Resource<List<ReviewEntry>>> reviewResult;
+    private LiveData<Boolean> isMovieFav;
 
-    public DetailViewModel(AppRepository moviesRepo) {
+    DetailViewModel(AppRepository moviesRepo) {
         this.moviesRepo = moviesRepo;
-
-        moviesRepo.loadMoviesById(SharedPreferenceHelper.getSharedPreferenceInt("mId"))
-                .observeForever(movieEntity -> movieResult.setValue(movieEntity));
     }
 
 
-    public MutableLiveData<MovieEntry> getMovieResult() {
+    public void start(Integer movieId) {
+        movieResult = moviesRepo.loadMoviesById(movieId);
+        castResults = moviesRepo.loadCast(movieId);
+        videoResults = moviesRepo.loadVideos(movieId);
+        reviewResult = moviesRepo.loadReviews(movieId);
+    }
+
+
+
+    public LiveData<MovieEntry> getMovieResult() {
         return movieResult;
     }
 
+    LiveData<Resource<List<GenreEntry>>> getGenresById(List<Integer> genreIds) {
+        return moviesRepo.loadGenres(genreIds);
+    }
+
+    public LiveData<Resource<List<CastEntry>>> getCastResults() { return castResults; }
+
+    public LiveData<Resource<List<VideoEntry>>> getVideoResults() { return videoResults; }
+
+    public LiveData<Resource<List<ReviewEntry>>> getReviewResult() { return reviewResult; }
+
+    public LiveData<Integer> setMovieFav(MovieEntry movieEntry) {
+        return moviesRepo.updateMovie(movieEntry);
+    }
 
     LiveData<Integer> deleteMovieById(int favMovieId) {
         return moviesRepo.deleteMovieById(favMovieId);
+    }
+
+    public void saveFavCast(List<CastEntry> favMovieCast) {
+         moviesRepo.saveFavMovieCast(favMovieCast);
+    }
+
+    public void saveFavReviews(List<ReviewEntry> favMovieReviews) {
+        moviesRepo.saveFavMovieReviews(favMovieReviews);
+    }
+
+    public void saveFavTrailers(List<VideoEntry> favMovieTrailers) {
+        moviesRepo.saveFavMovieVideos(favMovieTrailers);
+    }
+
+    LiveData<List<CastEntry>> getFavCasts(List<Integer> castIds) {
+        return moviesRepo.getCastsById(castIds);
+    }
+
+    LiveData<List<ReviewEntry>> getFavReviews(int favMovieId) {
+        return moviesRepo.getReviewsByMovie(favMovieId);
+    }
+
+    LiveData<List<VideoEntry>> getFavVideos(int favMovieId) {
+        return moviesRepo.getVideosByMovie(favMovieId);
+    }
+
+    LiveData<Integer> deleteFavReview(int favMovieId) {
+        return moviesRepo.deleteFavMovieReviews(favMovieId);
+    }
+
+    LiveData<Integer> deleteFavVideo(int favMovieId) {
+        return moviesRepo.deleteFavMovieVideos(favMovieId);
     }
 }

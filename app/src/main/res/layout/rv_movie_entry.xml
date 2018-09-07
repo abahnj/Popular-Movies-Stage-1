@@ -28,7 +28,7 @@
         android:typeface="normal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imv_movie_poster"
+        app:layout_constraintTop_toBottomOf="@id/imv_movie_poster"
         tools:targetApi="lollipop"
         tools:text="Spider - Man HomeComing" />
 
@@ -41,11 +41,11 @@
         android:textSize="@dimen/txt_12"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/tv_movie_rating"
+        app:layout_constraintEnd_toStartOf="@id/tv_movie_rating"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintHorizontal_chainStyle="spread_inside"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_movie_title"
+        app:layout_constraintTop_toBottomOf="@id/tv_movie_title"
         tools:text="July 7, 2017" />
 
     <TextView
@@ -59,8 +59,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/tv_release_date"
-        app:layout_constraintTop_toBottomOf="@+id/tv_movie_title"
+        app:layout_constraintStart_toEndOf="@id/tv_release_date"
+        app:layout_constraintTop_toBottomOf="@id/tv_movie_title"
         tools:text="7.9" />
 
 </android.support.constraint.ConstraintLayout>

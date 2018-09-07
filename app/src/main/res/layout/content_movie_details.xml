@@ -18,9 +18,10 @@
             android:layout_height="@dimen/poster_height"
             android:layout_marginTop="@dimen/margin_20"
             android:contentDescription="@string/movie_poster"
-            android:scaleType="centerCrop"
-            app:layout_constraintStart_toStartOf="@+id/guideline_begin"
+            android:scaleType="centerInside"
+            app:layout_constraintStart_toStartOf="@id/guideline_begin"
             app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/ic_action_clapper"
             tools:srcCompat="@color/colorPrimary" />
 
         <android.support.constraint.Guideline
@@ -45,8 +46,8 @@
             android:layout_marginTop="20dp"
             android:textSize="@dimen/txt_20"
             android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@+id/guideline_end"
-            app:layout_constraintStart_toEndOf="@+id/imv_poster"
+            app:layout_constraintEnd_toStartOf="@id/guideline_end"
+            app:layout_constraintStart_toEndOf="@id/imv_poster"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Avengers: Infinity War" />
 
@@ -56,18 +57,23 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_16"
             android:textSize="@dimen/txt_14"
-            app:layout_constraintStart_toEndOf="@+id/imv_poster"
-            app:layout_constraintTop_toBottomOf="@+id/tv_title"
+            app:layout_constraintStart_toEndOf="@id/imv_poster"
+            app:layout_constraintTop_toBottomOf="@id/tv_title"
             tools:text="April 23, 2017" />
 
         <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_genres"
             android:layout_width="@dimen/min_width"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_16"
             android:layout_marginTop="@dimen/margin_8"
-            app:layout_constraintEnd_toStartOf="@+id/guideline_end"
-            app:layout_constraintStart_toEndOf="@+id/imv_poster"
-            app:layout_constraintTop_toBottomOf="@+id/tv_release_date" />
+            tools:listitem="@layout/list_item_genre"
+            tools:itemCount="2"
+            tools:layoutManager="android.support.v7.widget.LinearLayoutManager"
+            tools:orientation="horizontal"
+            app:layout_constraintEnd_toStartOf="@id/guideline_end"
+            app:layout_constraintStart_toEndOf="@id/imv_poster"
+            app:layout_constraintTop_toBottomOf="@id/tv_release_date" />
 
         <android.support.constraint.Barrier
             android:id="@+id/barrier_poster_rating_bottom"
@@ -86,7 +92,7 @@
             android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/barrier_poster_rating_bottom" />
+            app:layout_constraintTop_toTopOf="@id/barrier_poster_rating_bottom" />
 
         <TextView
             android:id="@+id/tv_plot"
@@ -94,37 +100,85 @@
             android:layout_height="wrap_content"
             android:text="@string/plot"
             android:textSize="@dimen/txt_20"
-            app:layout_constraintStart_toStartOf="@+id/guideline_begin"
-            app:layout_constraintTop_toBottomOf="@+id/lay_rating" />
+            app:layout_constraintStart_toStartOf="@id/guideline_begin"
+            app:layout_constraintTop_toBottomOf="@id/lay_rating" />
 
-       <!-- <View
+       <View
             android:layout_width="@dimen/heading_view_width"
             android:layout_height="@dimen/min_height"
             android:background="@color/colorAccent"
-            app:layout_constraintBottom_toBottomOf="@+id/tv_plot"
+            app:layout_constraintBottom_toBottomOf="@id/tv_plot"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/tv_plot" />-->
+            app:layout_constraintTop_toTopOf="@id/tv_plot" />
+
 
         <TextView
             android:id="@+id/tv_plot_details"
             android:layout_width="@dimen/min_width"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_12"
-            app:layout_constraintEnd_toStartOf="@+id/guideline_end"
-            app:layout_constraintStart_toStartOf="@+id/guideline_begin"
-            app:layout_constraintTop_toBottomOf="@+id/tv_plot"
-            tools:text="This is the plot" />
+            app:layout_constraintEnd_toStartOf="@id/guideline_end"
+            app:layout_constraintStart_toStartOf="@id/guideline_begin"
+            app:layout_constraintTop_toBottomOf="@id/tv_plot"
+            tools:text="@tools:sample/lorem/random" />
 
-      <!--  <ProgressBar
+        <include
+            android:id="@+id/lay_cast"
+            layout="@layout/lay_cast"
+            android:layout_width="@dimen/min_width"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_16"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_plot_details" />
+
+
+        <include
+            android:id="@+id/lay_trailer"
+            layout="@layout/lay_trailer"
+            android:layout_width="@dimen/min_width"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lay_cast" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_trailers"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginStart="@dimen/margin_16"
+            android:layout_marginTop="@dimen/margin_8"
+            tools:layoutManager="android.support.v7.widget.LinearLayoutManager"
+            tools:orientation="horizontal"
+            android:scrollbars="horizontal"
+            app:layout_constraintEnd_toStartOf="@id/guideline_end"
+            app:layout_constraintStart_toEndOf="@id/guideline_begin"
+            app:layout_constraintTop_toBottomOf="@id/lay_trailer"
+            tools:listitem="@layout/list_item_trailer" />
+
+        <include
+            android:id="@+id/lay_reviews"
+            layout="@layout/lay_review"
+            android:layout_width="@dimen/min_width"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/rv_trailers" />
+
+        <ProgressBar
             android:id="@+id/progress_detail"
             style="?android:attr/progressBarStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_16"
-            android:visibility="visible"
-            app:layout_constraintEnd_toStartOf="@+id/guideline_end"
-            app:layout_constraintStart_toStartOf="@+id/guideline_begin"
-            app:layout_constraintTop_toBottomOf="@+id/tv_plot_details" />-->
+            android:visibility="gone"
+            app:layout_constraintEnd_toStartOf="@id/guideline_end"
+            app:layout_constraintStart_toStartOf="@id/guideline_begin"
+            app:layout_constraintTop_toBottomOf="@id/tv_plot_details" />
 
     </android.support.constraint.ConstraintLayout>
 </android.support.v4.widget.NestedScrollView>

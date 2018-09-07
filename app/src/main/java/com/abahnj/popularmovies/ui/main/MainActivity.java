@@ -1,11 +1,13 @@
 package com.abahnj.popularmovies.ui.main;
 
 
+import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -23,26 +25,29 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.abahnj.popularmovies.R;
+import com.abahnj.popularmovies.data.MovieEntry;
 import com.abahnj.popularmovies.interfaces.MovieClickListener;
+import com.abahnj.popularmovies.ui.adapter.MovieListAdapter;
 import com.abahnj.popularmovies.ui.detail.DetailActivity;
 import com.abahnj.popularmovies.utils.AppUtils;
 import com.abahnj.popularmovies.utils.Constants;
 import com.abahnj.popularmovies.utils.GridSpacingItemDecoration;
 import com.abahnj.popularmovies.utils.SharedPreferenceHelper;
 
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.abahnj.popularmovies.utils.Constants.ACTIVITY_FAVOURITE;
+import static com.abahnj.popularmovies.utils.Constants.ACTIVITY_NORMAL;
 import static com.abahnj.popularmovies.utils.Constants.ACTIVITY_TYPE;
 import static com.abahnj.popularmovies.utils.Constants.MOVIE_ID_INTENT;
 import static com.abahnj.popularmovies.utils.Constants.MOVIE_IMAGE_TRANSITION;
 
-public class MainActivity extends AppCompatActivity implements MovieClickListener{
+public class MainActivity extends AppCompatActivity implements MovieClickListener {
 
-    private MainViewModel mViewModel;
-    private MovieListAdapter movieListAdapter;
-    private ConstraintLayout constraintLayout;
     @BindView(R.id.progressBar)
     ProgressBar progressBar;
     @BindView(R.id.rv_movies)
@@ -53,6 +58,11 @@ public class MainActivity extends AppCompatActivity implements MovieClickListene
     TextView tvToolbar;
     @BindView(R.id.no_internet_layout)
     View noInternet;
+    @BindView(R.id.no_fav_layout)
+    View noFav;
+    private MainViewModel mViewModel;
+    private MovieListAdapter movieListAdapter;
+    private ConstraintLayout constraintLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,7 +90,7 @@ public class MainActivity extends AppCompatActivity implements MovieClickListene
     }
 
     private void setupViewModel() {
-        MainViewModelFactory factory = MainViewModelFactory.getInstance(this.getApplication());
+        MainViewModelFactory factory = MainViewModelFactory.getInstance(this);
 
         mViewModel = ViewModelProviders.of(this, factory).get(MainViewModel.class);
 
@@ -92,11 +102,29 @@ public class MainActivity extends AppCompatActivity implements MovieClickListene
 
     private void loadMovies(String sort, int loadingIdentifier) {
 
+        mViewModel.loadFavMoviesFromDb().removeObservers(MainActivity.this);
+
+        mViewModel.loadMovies(false, "null").removeObservers(MainActivity.this);
+
+        Observer<List<MovieEntry>> observer = movieEntries -> {
+            if ((movieEntries != null && !movieEntries.isEmpty())) {
+                noFav.setVisibility(View.GONE);
+                movieListAdapter.submitList(movieEntries);
+            } else {
+                movieListAdapter.submitList(movieEntries);
+                noFav.setVisibility(View.VISIBLE);
+            }
+        };
+        mViewModel.loadFavMoviesFromDb().removeObserver(observer);
+
         boolean forceLoad = loadingIdentifier == 1;
+        noFav.setVisibility(View.GONE);
+
 
         if (sort.equalsIgnoreCase(Constants.SORT_BY_FAVORITE)) {
-
-        } else {
+            mViewModel.loadFavMoviesFromDb().observe(this, observer);
+        }
+            else {
             mViewModel.loadMovies(forceLoad, sort).observe(this, movieResource -> {
                 if (movieResource != null) {
                     switch (movieResource.getStatus()) {
@@ -152,6 +180,17 @@ public class MainActivity extends AppCompatActivity implements MovieClickListene
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_main, menu);
+        switch (SharedPreferenceHelper.getSharedPreferenceString(Constants.PREF_FILTER, null)) {
+            case Constants.SORT_BY_TOP_RATED:
+                menu.findItem(R.id.top_rated).setChecked(true);
+                break;
+            case Constants.SORT_BY_POPULAR:
+                menu.findItem(R.id.popular).setChecked(true);
+                break;
+            case Constants.SORT_BY_FAVORITE:
+                menu.findItem(R.id.favorite).setChecked(true);
+                break;
+        }
         return true;
     }
 
@@ -166,10 +205,16 @@ public class MainActivity extends AppCompatActivity implements MovieClickListene
                 loadMovies(Constants.SORT_BY_POPULAR, loadingIdentifier);
                 break;
             case 2:
-                if (SharedPreferenceHelper.getSharedPreferenceString(Constants.PREF_FILTER, null).equals(Constants.SORT_BY_TOP_RATED)) {
-                    loadMovies(Constants.SORT_BY_TOP_RATED, 2);
-                } else if (SharedPreferenceHelper.getSharedPreferenceString(Constants.PREF_FILTER, null).equals(Constants.SORT_BY_POPULAR)) {
-                    loadMovies(Constants.SORT_BY_POPULAR, 2);
+                switch (SharedPreferenceHelper.getSharedPreferenceString(Constants.PREF_FILTER, null)) {
+                    case Constants.SORT_BY_TOP_RATED:
+                        loadMovies(Constants.SORT_BY_TOP_RATED, 2);
+                        break;
+                    case Constants.SORT_BY_POPULAR:
+                        loadMovies(Constants.SORT_BY_POPULAR, 2);
+                        break;
+                    case Constants.SORT_BY_FAVORITE:
+                        loadMovies(Constants.SORT_BY_FAVORITE, 1);
+                        break;
                 }
                 break;
             default:
@@ -181,8 +226,11 @@ public class MainActivity extends AppCompatActivity implements MovieClickListene
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.popular: {
-                if (item.isChecked()) item.setChecked(false);
-                else item.setChecked(true);
+                if (item.isChecked())
+                    return true;
+                else
+                    item.setChecked(true);
+
                 if (AppUtils.isNetworkAvailable(this)) {
                     SharedPreferenceHelper.setSharedPreferenceString(Constants.PREF_FILTER, Constants.SORT_BY_POPULAR);
                     loadMovies(Constants.SORT_BY_POPULAR, 1);
@@ -192,8 +240,11 @@ public class MainActivity extends AppCompatActivity implements MovieClickListene
                 return true;
             }
             case R.id.top_rated: {
-                if (item.isChecked()) item.setChecked(false);
-                else item.setChecked(true);
+                if (item.isChecked())
+                    return true;
+                else
+                    item.setChecked(true);
+
                 if (AppUtils.isNetworkAvailable(this)) {
                     SharedPreferenceHelper.setSharedPreferenceString(Constants.PREF_FILTER, Constants.SORT_BY_TOP_RATED);
                     loadMovies(Constants.SORT_BY_TOP_RATED, 1);
@@ -202,8 +253,19 @@ public class MainActivity extends AppCompatActivity implements MovieClickListene
                 }
                 return true;
             }
+            case R.id.favorite: {
+                if (item.isChecked())
+                    return true;
+                else
+                    item.setChecked(true);
+
+                SharedPreferenceHelper.setSharedPreferenceString(Constants.PREF_FILTER, Constants.SORT_BY_FAVORITE);
+                loadMovies(Constants.SORT_BY_FAVORITE, 1);
+                return true;
+            }
             default:
                 return super.onOptionsItemSelected(item);
+
         }
     }
 
@@ -214,7 +276,15 @@ public class MainActivity extends AppCompatActivity implements MovieClickListene
         Bundle bundle = new Bundle();
         bundle.putInt(MOVIE_ID_INTENT, movieId);
         bundle.putString(MOVIE_IMAGE_TRANSITION, transitionName);
-        bundle.putString(ACTIVITY_TYPE, activityType);
+        switch (SharedPreferenceHelper.getSharedPreferenceString(Constants.PREF_FILTER, null)) {
+            case Constants.SORT_BY_FAVORITE: {
+                bundle.putString(ACTIVITY_TYPE, ACTIVITY_FAVOURITE);
+                break;
+            }
+            default:
+                bundle.putString(ACTIVITY_TYPE, activityType);
+
+        }
         intent.putExtras(bundle);
 
         SharedPreferenceHelper.setSharedPreferenceInt("mId", movieId);

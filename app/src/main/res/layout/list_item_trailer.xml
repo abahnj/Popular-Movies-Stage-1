@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/imv_video_thumb"
+        android:layout_width="@dimen/min_width"
+        android:layout_height="@dimen/min_height"
+        android:layout_marginEnd="@dimen/margin_20"
+        android:layout_marginStart="@dimen/margin_20"
+        android:layout_marginTop="@dimen/margin_12"
+        android:contentDescription="@string/img_video_thumb"
+        android:scaleType="centerCrop"
+        app:layout_constraintDimensionRatio="16:9"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@drawable/ic_action_clapper" />
+
+    <TextView
+        android:id="@+id/tv_trailer_title"
+        android:layout_width="@dimen/min_width"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_32"
+        android:layout_marginEnd="@dimen/margin_8"
+        android:layout_marginStart="@dimen/margin_20"
+        android:layout_marginTop="@dimen/margin_8"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@id/imv_share"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/imv_video_thumb"
+        tools:text="Avengers: The Infinity War 2" />
+
+    <ImageView
+        android:id="@+id/imv_share"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/min_height"
+        android:layout_marginTop="@dimen/margin_8"
+        app:layout_constraintEnd_toEndOf="@id/imv_video_thumb"
+        app:layout_constraintTop_toBottomOf="@id/imv_video_thumb"
+        app:srcCompat="@drawable/ic_share_black"
+        android:contentDescription="@string/share" />
+
+    <ImageView
+        android:id="@+id/imv_play_thumb"
+        android:layout_width="@dimen/play_thumb"
+        android:layout_height="@dimen/play_thumb"
+        app:layout_constraintBottom_toBottomOf="@id/imv_video_thumb"
+        app:layout_constraintEnd_toEndOf="@id/imv_video_thumb"
+        app:layout_constraintStart_toStartOf="@id/imv_video_thumb"
+        app:layout_constraintTop_toTopOf="@id/imv_video_thumb"
+        app:srcCompat="@drawable/ic_play_circle_outline_black"
+        android:contentDescription="@string/play_thumb" />
+
+</android.support.constraint.ConstraintLayout>
