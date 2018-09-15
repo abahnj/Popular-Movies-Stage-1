@@ -2,6 +2,7 @@ package com.abahnj.popularmovies.data;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
@@ -12,13 +13,15 @@ import android.support.annotation.NonNull;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import static android.arch.persistence.room.ForeignKey.CASCADE;
+
 @Entity(tableName = "videos",
-        indices = @Index("fav_movie_id")
-        /*foreignKeys = @ForeignKey(
-                entity = FavMovieEntity.class,
+        indices = @Index("fav_movie_id"),
+        foreignKeys = @ForeignKey(
+                entity = FavMovieEntry.class,
                 parentColumns = "movieId",
                 childColumns = "fav_movie_id",
-                onDelete = CASCADE)*/)
+                onDelete = CASCADE))
 public class VideoEntry implements Parcelable {
     @PrimaryKey
     @NonNull

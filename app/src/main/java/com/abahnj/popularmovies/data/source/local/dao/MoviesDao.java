@@ -10,6 +10,7 @@ import android.arch.persistence.room.Transaction;
 import android.arch.persistence.room.Update;
 
 import com.abahnj.popularmovies.data.CastEntry;
+import com.abahnj.popularmovies.data.FavMovieEntry;
 import com.abahnj.popularmovies.data.GenreEntry;
 import com.abahnj.popularmovies.data.MovieEntry;
 import com.abahnj.popularmovies.data.ReviewEntry;
@@ -33,6 +34,9 @@ public interface MoviesDao {
     int updateMovie (MovieEntry movieEntry);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void saveFavMovie(FavMovieEntry favMovieEntity);
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void saveFavReview(List<ReviewEntry> reviewEntry);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -41,7 +45,7 @@ public interface MoviesDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void saveFavCast(List<CastEntry> castEntry);
 
-    @Query("SELECT * FROM movies WHERE isMovieFav = 1 ORDER BY updatedAt ASC")
+    @Query("SELECT * FROM fav_movies ORDER BY createdAt")
     LiveData<List<MovieEntry>> loadFavMoviesFromDb();
 
 
@@ -80,4 +84,8 @@ public interface MoviesDao {
 
     @Delete
     int deleteFavVideo(List<VideoEntry> favMovieVideoEntities);
+
+    @Query("SELECT * FROM fav_movies WHERE movieId =:favMovieId")
+    LiveData<FavMovieEntry> loadFavMoviesById(int favMovieId);
+
 }

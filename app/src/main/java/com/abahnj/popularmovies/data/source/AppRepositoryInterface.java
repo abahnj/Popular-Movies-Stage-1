@@ -4,6 +4,7 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 
 import com.abahnj.popularmovies.data.CastEntry;
+import com.abahnj.popularmovies.data.FavMovieEntry;
 import com.abahnj.popularmovies.data.GenreEntry;
 import com.abahnj.popularmovies.data.MovieEntry;
 import com.abahnj.popularmovies.data.ReviewEntry;
@@ -42,6 +43,8 @@ public interface AppRepositoryInterface {
 
     LiveData<List<CastEntry>> getCastsById(List<Integer> castIds);
 
+    void saveFavouriteMovie(FavMovieEntry favMovieEntity);
+
     void saveFavMovieCast(List<CastEntry> favMovieCastEntities);
 
     void saveFavMovieReviews(List<ReviewEntry> favMovieReviewEntities);
@@ -54,4 +57,5 @@ public interface AppRepositoryInterface {
 
     LiveData<Integer> deleteFavMovieVideos(List<VideoEntry> favMovieVideoEntities);
 
+    LiveData<FavMovieEntry> loadFavMovieById(int movieId);
 }

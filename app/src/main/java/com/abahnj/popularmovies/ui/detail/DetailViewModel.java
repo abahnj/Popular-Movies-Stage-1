@@ -4,6 +4,7 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;
 
 import com.abahnj.popularmovies.data.CastEntry;
+import com.abahnj.popularmovies.data.FavMovieEntry;
 import com.abahnj.popularmovies.data.GenreEntry;
 import com.abahnj.popularmovies.data.MovieEntry;
 import com.abahnj.popularmovies.data.ReviewEntry;
@@ -50,8 +51,8 @@ public class DetailViewModel extends ViewModel {
 
     public LiveData<Resource<List<ReviewEntry>>> getReviewResult() { return reviewResult; }
 
-    public LiveData<Integer> setMovieFav(MovieEntry movieEntry) {
-        return moviesRepo.updateMovie(movieEntry);
+    void saveFavMovies(FavMovieEntry favMovieEntity) {
+        moviesRepo.saveFavouriteMovie(favMovieEntity);
     }
 
     LiveData<Integer> deleteMovieById(int favMovieId) {
@@ -82,11 +83,7 @@ public class DetailViewModel extends ViewModel {
         return moviesRepo.getVideosByMovie(favMovieId);
     }
 
-    LiveData<Integer> deleteFavReview(int favMovieId) {
-        return moviesRepo.deleteFavMovieReviews(favMovieId);
-    }
-
-    LiveData<Integer> deleteFavVideo(int favMovieId) {
-        return moviesRepo.deleteFavMovieVideos(favMovieId);
+    LiveData<FavMovieEntry> loadFavMoviesById(int favMovieId) {
+        return moviesRepo.loadFavMovieById(favMovieId);
     }
 }

@@ -14,7 +14,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@color/colorAccent"
+        tools:src="@drawable/ic_action_clapper"
         android:contentDescription="@string/movie_poster" />
 
     <TextView

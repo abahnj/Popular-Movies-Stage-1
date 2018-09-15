@@ -102,29 +102,21 @@ public class MainActivity extends AppCompatActivity implements MovieClickListene
 
     private void loadMovies(String sort, int loadingIdentifier) {
 
-        mViewModel.loadFavMoviesFromDb().removeObservers(MainActivity.this);
-
-        mViewModel.loadMovies(false, "null").removeObservers(MainActivity.this);
-
-        Observer<List<MovieEntry>> observer = movieEntries -> {
-            if ((movieEntries != null && !movieEntries.isEmpty())) {
-                noFav.setVisibility(View.GONE);
-                movieListAdapter.submitList(movieEntries);
-            } else {
-                movieListAdapter.submitList(movieEntries);
-                noFav.setVisibility(View.VISIBLE);
-            }
-        };
-        mViewModel.loadFavMoviesFromDb().removeObserver(observer);
-
         boolean forceLoad = loadingIdentifier == 1;
         noFav.setVisibility(View.GONE);
 
-
         if (sort.equalsIgnoreCase(Constants.SORT_BY_FAVORITE)) {
-            mViewModel.loadFavMoviesFromDb().observe(this, observer);
-        }
-            else {
+            mViewModel.loadFavMoviesFromDb().observe(this, movieEntries -> {
+                        if ((movieEntries != null && !movieEntries.isEmpty())) {
+                            noFav.setVisibility(View.GONE);
+                            movieListAdapter.submitList(movieEntries);
+                        } else {
+                            movieListAdapter.submitList(movieEntries);
+                            noFav.setVisibility(View.VISIBLE);
+                        }
+                    }
+            );
+        } else {
             mViewModel.loadMovies(forceLoad, sort).observe(this, movieResource -> {
                 if (movieResource != null) {
                     switch (movieResource.getStatus()) {

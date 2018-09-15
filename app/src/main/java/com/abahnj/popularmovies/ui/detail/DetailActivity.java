@@ -30,6 +30,7 @@ import android.widget.TextView;
 
 import com.abahnj.popularmovies.R;
 import com.abahnj.popularmovies.data.CastEntry;
+import com.abahnj.popularmovies.data.FavMovieEntry;
 import com.abahnj.popularmovies.data.MovieEntry;
 import com.abahnj.popularmovies.data.ReviewEntry;
 import com.abahnj.popularmovies.data.VideoEntry;
@@ -128,7 +129,7 @@ public class DetailActivity extends AppCompatActivity {
     private TrailersAdapter trailersAdapter;
     private List<ReviewEntry> reviews = new ArrayList<>();
     private boolean isMovieFav;
-    private MovieEntry movieEntry;
+    private FavMovieEntry favMovieEntity, tempFavMovieEntity;
 
 
     @Override
@@ -241,7 +242,6 @@ public class DetailActivity extends AppCompatActivity {
     private void populateUi() {
         detailViewModel.getMovieResult().observe(this, movie -> {
             if (movie != null) {
-                movieEntry = movie;
                 setUpToolbarTitle(movie.getTitle());
                 loadBackDropImage(movie.getBackdropPath());
                 loadMainImage(movie.getPosterPath());
@@ -250,20 +250,21 @@ public class DetailActivity extends AppCompatActivity {
                 setMovieReleaseDate(movie.getReleaseDate());
                 setMoviePlotDetails(movie.getOverview());
                 loadGenres(movie.getGenreIds());
-                if (movie.getMovieFav() == null || !movie.getMovieFav()){
-                    mImvFavourite.setImageResource(R.drawable.ic_favorite_border);
-                } else {
-                    mImvFavourite.setImageResource(R.drawable.ic_favorite);
-                }
-
-            }
-            if (activityType.equals(ACTIVITY_NORMAL)) {
-                getData();
-            } else
-            {
-                getFavMovies(movieEntry);
             }
         });
+        detailViewModel.loadFavMoviesById(movieId)
+                .observe(this, favMovie -> {
+                    mProgressBar.setVisibility(View.VISIBLE);
+                    if (favMovie != null) {
+                        isMovieFav = true;
+                        mImvFavourite.setImageResource(R.drawable.ic_favorite);
+                        getFavMovies(favMovie);
+                    } else {
+                        isMovieFav = false;
+                        mImvFavourite.setImageResource(R.drawable.ic_favorite_border);
+                        getData();
+                    }
+                });
 
     }
 
@@ -472,7 +473,7 @@ public class DetailActivity extends AppCompatActivity {
 
     }
 
-    private void getFavMovies(MovieEntry favMovie) {
+    private void getFavMovies(FavMovieEntry favMovie) {
         detailViewModel.getFavCasts(favMovie.getCastIds()).observe(this, favMovieCasts -> {
             if (favMovieCasts != null && !favMovieCasts.isEmpty()) {
                 mLayCast.setVisibility(View.VISIBLE);
@@ -526,7 +527,6 @@ public class DetailActivity extends AppCompatActivity {
                         favMovieCast.add(new CastEntry(item.getId(), item.getName(), item.getProfilePath()));
                         if (castIds.size() > 10) break;
                     }
-                    movieEntry.setCastIds(castIds);
                 }
             }
         });
@@ -562,7 +562,45 @@ public class DetailActivity extends AppCompatActivity {
             }
         });
 
+        detailViewModel.getMovieResult().observe(this, movie -> {
+            if (movie != null) {
+                favMovieEntity = new FavMovieEntry(
+                        movie.getMovieId(),
+                        movie.getVoteCount(),
+                        movie.getVoteAverage(),
+                        movie.getTitle(),
+                        movie.getPosterPath(),
+                        movie.getGenreIds(),
+                        movie.getBackdropPath(),
+                        movie.getOverview(),
+                        movie.getReleaseDate(),
+                        castIds,
+                        System.currentTimeMillis());
+            } else {
+                detailViewModel.loadFavMoviesById(movieId).observe(this, favMovie -> {
+                    if (favMovie != null) {
+                        favMovieEntity = new FavMovieEntry(
+                                favMovie.getMovieId(),
+                                favMovie.getVoteCount(),
+                                favMovie.getVoteAverage(),
+                                favMovie.getTitle(),
+                                favMovie.getPosterPath(),
+                                favMovie.getGenreIds(),
+                                favMovie.getBackdropPath(),
+                                favMovie.getOverview(),
+                                favMovie.getReleaseDate(),
+                                castIds,
+                                System.currentTimeMillis());
+                    }
+                });
+            }
+        });
 
+        if (favMovieEntity != null) {
+            detailViewModel.saveFavMovies(favMovieEntity);
+        } else {
+            detailViewModel.saveFavMovies(tempFavMovieEntity);
+        }
 
         if (!castIds.isEmpty() && !favMovieCast.isEmpty()) {
             detailViewModel.saveFavCast(favMovieCast);
@@ -584,23 +622,20 @@ public class DetailActivity extends AppCompatActivity {
     public void onFavClicked() {
         if (isMovieFav) {
             isMovieFav = false;
-            setMovieAsFav(false);
-            detailViewModel.deleteFavReview(movieId);
-            detailViewModel.deleteFavVideo(movieId);
+            deleteFavMovies();
+            getData();
         } else {
             isMovieFav = true;
             saveFavMovies(movieId);
-            setMovieAsFav(true);
         }
     }
-    public List<VideoEntry> getVideos() {
-        return videos;
+
+    private void deleteFavMovies() {
+        detailViewModel.deleteMovieById(movieId).observe(this, integer -> AppUtils.setSnackBar(snackBarView, "Removed from favorites"));
     }
 
-    public void setMovieAsFav(Boolean isMovieFav) {
-        movieEntry.setMovieFav(isMovieFav);
-        movieEntry.setUpdatedAt(System.currentTimeMillis());
-        detailViewModel.setMovieFav(movieEntry);
+    public List<VideoEntry> getVideos() {
+        return videos;
     }
 
     public String getVideoKey() {

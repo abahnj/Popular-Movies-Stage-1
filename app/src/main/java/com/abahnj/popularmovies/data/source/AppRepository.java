@@ -13,6 +13,7 @@ import com.abahnj.popularmovies.api.response.MovieResponse;
 import com.abahnj.popularmovies.api.response.ReviewResponse;
 import com.abahnj.popularmovies.api.response.VideoResponse;
 import com.abahnj.popularmovies.data.CastEntry;
+import com.abahnj.popularmovies.data.FavMovieEntry;
 import com.abahnj.popularmovies.data.GenreEntry;
 import com.abahnj.popularmovies.data.MovieEntry;
 import com.abahnj.popularmovies.data.ReviewEntry;
@@ -241,6 +242,12 @@ public class AppRepository implements AppRepositoryInterface {
     }
 
     @Override
+    public void saveFavouriteMovie(FavMovieEntry favMovieEntity) {
+        executor.diskIO().execute(() -> moviesDao.saveFavMovie(favMovieEntity));
+    }
+
+
+    @Override
     public void saveFavMovieCast(List<CastEntry> favMovieCastEntities) {
         executor.diskIO().execute(() -> moviesDao.saveFavCast(favMovieCastEntities));
     }
@@ -275,6 +282,11 @@ public class AppRepository implements AppRepositoryInterface {
         MutableLiveData<Integer> liveData = new MutableLiveData<>();
         executor.diskIO().execute(() -> liveData.postValue(moviesDao.deleteFavVideo(favMovieVideoEntities)));
         return liveData;
+    }
+
+    @Override
+    public LiveData<FavMovieEntry> loadFavMovieById(int movieId) {
+        return moviesDao.loadFavMoviesById(movieId);
     }
 
     @Override

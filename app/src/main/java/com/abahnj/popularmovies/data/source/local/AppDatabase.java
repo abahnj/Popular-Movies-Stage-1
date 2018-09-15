@@ -8,6 +8,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.abahnj.popularmovies.data.CastEntry;
+import com.abahnj.popularmovies.data.FavMovieEntry;
 import com.abahnj.popularmovies.data.GenreEntry;
 import com.abahnj.popularmovies.data.MovieEntry;
 import com.abahnj.popularmovies.data.ReviewEntry;
@@ -20,7 +21,8 @@ import com.abahnj.popularmovies.data.source.local.dao.MoviesDao;
         GenreEntry.class,
         CastEntry.class,
         ReviewEntry.class,
-        VideoEntry.class},
+        VideoEntry.class,
+        FavMovieEntry.class},
         version = 1,
         exportSchema = false)
 @TypeConverters({IntegerListConvertor.class})
