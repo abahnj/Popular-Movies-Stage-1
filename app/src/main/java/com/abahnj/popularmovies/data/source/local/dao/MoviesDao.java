@@ -48,7 +48,6 @@ public interface MoviesDao {
     @Query("SELECT * FROM fav_movies ORDER BY createdAt")
     LiveData<List<MovieEntry>> loadFavMoviesFromDb();
 
-
     @Query("SELECT * FROM `cast` WHERE id IN (:castIds)")
     LiveData<List<CastEntry>> getCastsById(List<Integer> castIds);
 
@@ -88,4 +87,5 @@ public interface MoviesDao {
     @Query("SELECT * FROM fav_movies WHERE movieId =:favMovieId")
     LiveData<FavMovieEntry> loadFavMoviesById(int favMovieId);
 
-}
+    @Query("DELETE FROM fav_movies WHERE movieId = :favMovieId")
+    int deleteMovieById(int favMovieId);}

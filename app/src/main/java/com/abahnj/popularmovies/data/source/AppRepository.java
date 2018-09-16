@@ -305,7 +305,9 @@ public class AppRepository implements AppRepositoryInterface {
 
     @Override
     public LiveData<Integer> deleteMovieById(int favMovieId) {
-        return null;
+        MutableLiveData<Integer> liveData = new MutableLiveData<>();
+        executor.diskIO().execute(() -> liveData.postValue(moviesDao.deleteMovieById(favMovieId)));
+        return liveData;
     }
 
     @Override
