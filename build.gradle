@@ -15,7 +15,6 @@ buildscript {
         roomVersion = '1.1.1'
         espressoVersion = '3.0.2'
         guavaVersion = '25.1-android'
-
     }
     repositories {
         google()

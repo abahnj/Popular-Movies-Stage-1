@@ -1,7 +1,6 @@
 package com.abahnj.popularmovies.data.source;
 
 import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MutableLiveData;
 
 import com.abahnj.popularmovies.data.CastEntry;
 import com.abahnj.popularmovies.data.FavMovieEntry;
@@ -29,7 +28,7 @@ public interface AppRepositoryInterface {
 
     LiveData<Integer> deleteMovieById(int favMovieId);
 
-    LiveData<List<MovieEntry>> loadFavMoviesFromDb();
+    LiveData<List<FavMovieEntry>> loadFavMoviesFromDb();
 
     LiveData<Integer> updateMovie (MovieEntry movieEntry);
 

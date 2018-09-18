@@ -27,6 +27,7 @@ import android.widget.TextView;
 import com.abahnj.popularmovies.R;
 import com.abahnj.popularmovies.data.MovieEntry;
 import com.abahnj.popularmovies.interfaces.MovieClickListener;
+import com.abahnj.popularmovies.ui.adapter.FavMoviesAdapter;
 import com.abahnj.popularmovies.ui.adapter.MovieListAdapter;
 import com.abahnj.popularmovies.ui.detail.DetailActivity;
 import com.abahnj.popularmovies.utils.AppUtils;
@@ -52,6 +53,8 @@ public class MainActivity extends AppCompatActivity implements MovieClickListene
     ProgressBar progressBar;
     @BindView(R.id.rv_movies)
     RecyclerView rvMovies;
+    @BindView(R.id.rv_favorites)
+    RecyclerView rvFavMovies;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.tv_toolbar_title)
@@ -63,6 +66,7 @@ public class MainActivity extends AppCompatActivity implements MovieClickListene
     private MainViewModel mViewModel;
     private MovieListAdapter movieListAdapter;
     private ConstraintLayout constraintLayout;
+    private FavMoviesAdapter mFavAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,12 +85,21 @@ public class MainActivity extends AppCompatActivity implements MovieClickListene
         loadFromSharedPrefs();
 
         movieListAdapter = new MovieListAdapter(this, this);
+        mFavAdapter = new FavMoviesAdapter(this);
+
         int recyclerViewSpanCount = getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT ? 2 : 4;
         RecyclerView.LayoutManager mMoviesLayoutManager = new GridLayoutManager(this, recyclerViewSpanCount);
+        RecyclerView.LayoutManager mFavMoviesLayoutManager = new GridLayoutManager(this, recyclerViewSpanCount);
+
         rvMovies.setLayoutManager(mMoviesLayoutManager);
         rvMovies.addItemDecoration(new GridSpacingItemDecoration(recyclerViewSpanCount, dpToPx(), true));
         rvMovies.setItemAnimator(new DefaultItemAnimator());
         rvMovies.setAdapter(movieListAdapter);
+
+        rvFavMovies.setLayoutManager(mFavMoviesLayoutManager);
+        rvFavMovies.addItemDecoration(new GridSpacingItemDecoration(recyclerViewSpanCount, dpToPx(), true));
+        rvFavMovies.setItemAnimator(new DefaultItemAnimator());
+        rvFavMovies.setAdapter(mFavAdapter);
     }
 
     private void setupViewModel() {
@@ -106,17 +119,21 @@ public class MainActivity extends AppCompatActivity implements MovieClickListene
         noFav.setVisibility(View.GONE);
 
         if (sort.equalsIgnoreCase(Constants.SORT_BY_FAVORITE)) {
+            rvFavMovies.setVisibility(View.VISIBLE);
+            rvMovies.setVisibility(View.GONE);
             mViewModel.loadFavMoviesFromDb().observe(this, movieEntries -> {
                         if ((movieEntries != null && !movieEntries.isEmpty())) {
                             noFav.setVisibility(View.GONE);
-                            movieListAdapter.submitList(movieEntries);
+                            mFavAdapter.addMoviesList(movieEntries);
                         } else {
-                            movieListAdapter.submitList(movieEntries);
+                            rvFavMovies.setVisibility(View.GONE);
                             noFav.setVisibility(View.VISIBLE);
                         }
                     }
             );
         } else {
+            rvMovies.setVisibility(View.VISIBLE);
+            rvFavMovies.setVisibility(View.GONE);
             mViewModel.loadMovies(forceLoad, sort).observe(this, movieResource -> {
                 if (movieResource != null) {
                     switch (movieResource.getStatus()) {

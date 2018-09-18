@@ -46,7 +46,7 @@ public interface MoviesDao {
     void saveFavCast(List<CastEntry> castEntry);
 
     @Query("SELECT * FROM fav_movies ORDER BY createdAt")
-    LiveData<List<MovieEntry>> loadFavMoviesFromDb();
+    LiveData<List<FavMovieEntry>> loadFavMoviesFromDb();
 
     @Query("SELECT * FROM `cast` WHERE id IN (:castIds)")
     LiveData<List<CastEntry>> getCastsById(List<Integer> castIds);

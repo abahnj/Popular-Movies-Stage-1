@@ -79,5 +79,15 @@
         tools:listitem="@layout/rv_movie_entry"
         tools:spanCount="2" />
 
+    <android.support.v7.widget.RecyclerView
+    android:id="@+id/rv_favorites"
+    android:layout_width="@dimen/min_width"
+    android:layout_height="@dimen/min_height"
+    android:visibility="gone"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/toolbar" />
+
 
 </android.support.constraint.ConstraintLayout>

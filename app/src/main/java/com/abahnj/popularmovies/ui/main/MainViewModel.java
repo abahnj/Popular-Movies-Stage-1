@@ -6,6 +6,7 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;
 import android.util.Log;
 
+import com.abahnj.popularmovies.data.FavMovieEntry;
 import com.abahnj.popularmovies.data.MovieEntry;
 import com.abahnj.popularmovies.data.source.AppRepository;
 import com.abahnj.popularmovies.utils.Resource;
@@ -27,7 +28,7 @@ public class MainViewModel extends ViewModel {
         return appRepository.loadMovies(forceLoad, sortBy);
     }
 
-    LiveData<List<MovieEntry>> loadFavMoviesFromDb(){
+    LiveData<List<FavMovieEntry>> loadFavMoviesFromDb(){
         return appRepository.loadFavMoviesFromDb();
     }
 

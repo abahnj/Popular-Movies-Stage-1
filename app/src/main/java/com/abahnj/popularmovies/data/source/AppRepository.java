@@ -311,7 +311,7 @@ public class AppRepository implements AppRepositoryInterface {
     }
 
     @Override
-    public LiveData<List<MovieEntry>> loadFavMoviesFromDb() {
+    public LiveData<List<FavMovieEntry>> loadFavMoviesFromDb() {
         return moviesDao.loadFavMoviesFromDb();
     }
 
